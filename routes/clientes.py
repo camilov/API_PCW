@@ -31,11 +31,15 @@ def main():
 
 #response_model=List[schemas.Clientes]
 
-@clientes.get('/clientes/',response_model=schemas.cl)
+@clientes.get('/clientes_todo/',response_model=schemas.cl)
 def show_clientes(db:Session=Depends(get_db)):
     clientes = {"status":"sucess","Lista":db.query(models.Clientes).all()}
     #print(clientes)
     return clientes
 
-
+@clientes.get('/clientes/{nombre}',response_model=schemas.cl)
+def show_clientes(nombre:str,db:Session=Depends(get_db)):
+    clientes = {"status":"sucess","Lista":db.query(models.Clientes).filter(models.Clientes.nombre.ilike(f'%{nombre}%')).all()}
+    #print(clientes)
+    return clientes
 
