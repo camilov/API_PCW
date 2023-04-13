@@ -37,3 +37,26 @@ def show_abonos(idTarjeta:int,db:Session=Depends(get_db)):
     abonos = {"status":"sucess","Lista":db.query(models.Abonos).filter(models.Abonos.idTarjeta == idTarjeta).order_by(models.Abonos.idAbono.asc()).all()}
     #print(clientes)
     return abonos
+
+
+#Ruta para guardar nuevo abono de tarjeta
+@abonos.post('/create_abono/',response_model=schemas.showAbonos)
+def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)):
+    abonos = models.Abonos(idTarjeta =entrada.idTarjeta,numCuota =entrada.numCuota,valorAbono =entrada.valorAbono,fechaAbono =entrada.fechaAbono)
+    #numCuota     = Column(Integer)
+    #valorAbono   = Column(Float)
+    #fechaAbono   = Column(Date)
+    
+    db.add(abonos)
+    db.commit()
+    db.refresh(abonos)
+    return abonos
+
+#Ruta para modificar cliente
+"""@abonos.put('/modificar_Cliente/{idCliente}',response_model=schemas.Clientes)
+def modify_cliente(idCliente:int,entrada:schemas.ModificarClientes,db:Session=Depends(get_db)):
+    cliente = db.query(models.Clientes).filter_by(idCliente=idCliente).first()
+    cliente.nombre=entrada.nombre
+    db.commit()
+    db.refresh(cliente)
+    return cliente"""
