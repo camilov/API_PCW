@@ -37,3 +37,23 @@ def show_tarjetas(idCliente:int,db:Session=Depends(get_db)):
     tarjetas = {"status":"sucess","Lista":db.query(models.Tarjetas).filter(models.Tarjetas.idCliente == idCliente).order_by(models.Tarjetas.idEstado.asc()).all()}
     #print(clientes)
     return tarjetas
+
+
+#Ruta para crear tarjeta
+@tarjetas.post('/create_tarjeta/',response_model=schemas.ShowTarjetas)
+def create_tarjeta(entrada:schemas.ShowTarjetas,db:Session=Depends(get_db)):
+    abonos = models.Tarjetas(idTarjeta =entrada.idTarjeta,
+                            idCliente  =entrada.idCliente,
+                            valorPrestado =entrada.valorPrestado,
+                            valorTotal =entrada.valorTotal,
+                            numCuotas =entrada.numCuotas,
+                            idEstado =entrada.idEstado,
+                            interes =entrada.interes,
+                            valorDefecto =entrada.valorDefecto,
+                            fechaPrestamo =entrada.fechaPrestamo)
+   
+    
+    db.add(abonos)
+    db.commit()
+    db.refresh(abonos)
+    return abonos
