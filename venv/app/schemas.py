@@ -37,6 +37,7 @@ class ShowTarjetas(BaseModel):
     interes       :float|None
     valorDefecto  :int
     fechaPrestamo :date
+    fecActu       :date
 
     
 

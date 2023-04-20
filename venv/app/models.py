@@ -19,6 +19,7 @@ class Tarjetas(Base):
     interes         = Column(Float)
     valorDefecto    = Column(Integer)
     fechaPrestamo   = Column(Date)
+    fecActu         = Column(Date)
 
 
 class Abonos(Base):

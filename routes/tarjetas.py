@@ -42,18 +42,21 @@ def show_tarjetas(idCliente:int,db:Session=Depends(get_db)):
 #Ruta para crear tarjeta
 @tarjetas.post('/create_tarjeta/',response_model=schemas.ShowTarjetas)
 def create_tarjeta(entrada:schemas.ShowTarjetas,db:Session=Depends(get_db)):
-    abonos = models.Tarjetas(idTarjeta =entrada.idTarjeta,
-                            idCliente  =entrada.idCliente,
-                            valorPrestado =entrada.valorPrestado,
-                            valorTotal =entrada.valorTotal,
-                            numCuotas =entrada.numCuotas,
-                            idEstado =entrada.idEstado,
-                            interes =entrada.interes,
-                            valorDefecto =entrada.valorDefecto,
-                            fechaPrestamo =entrada.fechaPrestamo)
+
+    tarjeta = models.Tarjetas(idTarjeta     = entrada.idTarjeta    ,
+                              idCliente     = entrada.idCliente    ,
+                              valorPrestado = entrada.valorPrestado,
+                              valorTotal    = entrada.valorTotal   ,
+                              numCuotas     = entrada.numCuotas    ,
+                              idEstado      = entrada.idEstado     ,
+                              interes       = entrada.interes      ,
+                              valorDefecto  = entrada.valorDefecto ,
+                              fechaPrestamo = entrada.fechaPrestamo,
+                              fecActu       = entrada.fecActu      )
    
     
-    db.add(abonos)
+    db.add(tarjeta)
     db.commit()
-    db.refresh(abonos)
-    return abonos
+    db.flush()
+    db.refresh(tarjeta)
+    return tarjeta
