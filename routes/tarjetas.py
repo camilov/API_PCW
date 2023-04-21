@@ -47,16 +47,16 @@ def create_tarjeta(entrada:schemas.ShowTarjetas,db:Session=Depends(get_db)):
                               idCliente     = entrada.idCliente    ,
                               valorPrestado = entrada.valorPrestado,
                               valorTotal    = entrada.valorTotal   ,
+                              fechaPrestamo = entrada.fechaPrestamo,
                               numCuotas     = entrada.numCuotas    ,
                               idEstado      = entrada.idEstado     ,
                               interes       = entrada.interes      ,
                               valorDefecto  = entrada.valorDefecto ,
-                              fechaPrestamo = entrada.fechaPrestamo,
                               fecActu       = entrada.fecActu      )
    
     
     db.add(tarjeta)
     db.commit()
-    db.flush()
+  #  db.flush()
     db.refresh(tarjeta)
     return tarjeta

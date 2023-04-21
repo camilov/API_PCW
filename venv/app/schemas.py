@@ -32,11 +32,11 @@ class ShowTarjetas(BaseModel):
     idCliente     :int
     valorPrestado :float
     valorTotal    :float
+    fechaPrestamo :date
     numCuotas     :int
     idEstado      :int
     interes       :float|None
     valorDefecto  :int
-    fechaPrestamo :date
     fecActu       :date
 
     

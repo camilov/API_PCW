@@ -14,11 +14,11 @@ class Tarjetas(Base):
     idCliente       = Column(Integer)
     valorPrestado   = Column(Float)
     valorTotal      = Column(Float)
+    fechaPrestamo   = Column(Date)
     numCuotas       = Column(Integer)
     idEstado        = Column(Integer)
     interes         = Column(Float)
     valorDefecto    = Column(Integer)
-    fechaPrestamo   = Column(Date)
     fecActu         = Column(Date)
 
 
