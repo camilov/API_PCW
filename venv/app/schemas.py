@@ -52,6 +52,12 @@ class ShowTarjetasCl(BaseModel):
     class Config:
         orm_mode = True
 
+class responseCreateTarjetas(BaseModel):
+    status:str
+
+    class Config:
+        orm_mode = True
+
 class showAbonos(BaseModel):
 
     idAbono       :Optional[int]
@@ -69,3 +75,4 @@ class ShowAbonosCl(BaseModel):
 
     class Config:
         orm_mode = True
+

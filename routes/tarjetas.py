@@ -40,7 +40,7 @@ def show_tarjetas(idCliente:int,db:Session=Depends(get_db)):
 
 
 #Ruta para crear tarjeta
-@tarjetas.post('/create_tarjeta/',response_model=schemas.ShowTarjetas)
+@tarjetas.post('/create_tarjeta/',response_model=schemas.responseCreateTarjetas)
 def create_tarjeta(entrada:schemas.ShowTarjetas,db:Session=Depends(get_db)):
 
     tarjeta = models.Tarjetas(idTarjeta     = entrada.idTarjeta    ,
@@ -55,8 +55,22 @@ def create_tarjeta(entrada:schemas.ShowTarjetas,db:Session=Depends(get_db)):
                               fecActu       = entrada.fecActu      )
    
     
-    db.add(tarjeta)
-    db.commit()
-  #  db.flush()
-    db.refresh(tarjeta)
-    return tarjeta
+    try:
+        db.add(tarjeta)
+        db.commit()
+        tarjetas = {"status":"sucess"}
+    
+    except Exception as e:
+        print(f"Error al refrescar la tarjeta: {str(e)}")
+        raise e
+    
+   # try:
+   #     db.refresh(tarjeta)
+   # except Exception as e:
+   #     # manejo de la excepción
+   #     print(f"Error al refrescar la tarjeta: {str(e)}")
+   #     raise e
+    
+    
+
+    return tarjetas
