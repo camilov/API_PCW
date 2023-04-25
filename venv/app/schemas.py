@@ -58,7 +58,7 @@ class responseCreateTarjetas(BaseModel):
     class Config:
         orm_mode = True
 
-class showAbonos(BaseModel):
+class showAbonos(BaseModel): 
 
     idAbono       :Optional[int]
     idTarjeta     :int
@@ -73,6 +73,13 @@ class ShowAbonosCl(BaseModel):
     status:str
     Lista:List[showAbonos]
 
+    class Config:
+        orm_mode = True
+
+class ModificarAbonos(BaseModel):
+    numCuota      :int
+    valorAbono    :float
+    
     class Config:
         orm_mode = True
 

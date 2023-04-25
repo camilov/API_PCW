@@ -53,10 +53,11 @@ def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)):
     return abonos
 
 #Ruta para modificar abonos
-@abonos.put('/modificar_abono/{idAbono}',response_model=schemas.Clientes)
-def modify_cliente(idCliente:int,entrada:schemas.ModificarClientes,db:Session=Depends(get_db)):
-    cliente = db.query(models.Clientes).filter_by(idCliente=idCliente).first()
-    cliente.nombre=entrada.nombre
+@abonos.put('/modificar_abono/{idAbono}',response_model=schemas.showAbonos)
+def modify_abonos(idAbono:int,entrada:schemas.ModificarAbonos,db:Session=Depends(get_db)):
+    abono = db.query(models.Abonos).filter_by(idAbono=idAbono).first()
+    abono.numCuota=entrada.numCuota
+    abono.valorAbono=entrada.valorAbono
     db.commit()
-    db.refresh(cliente)
-    return cliente
+    db.refresh(abono)
+    return abono
