@@ -41,11 +41,11 @@ def show_abonos(idTarjeta:int,db:Session=Depends(get_db)):
 
 #Ruta para guardar nuevo abono de tarjeta
 @abonos.post('/create_abono/',response_model=schemas.showAbonos)
-def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)):
+def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)): 
     abonos = models.Abonos(idTarjeta =entrada.idTarjeta,numCuota =entrada.numCuota,valorAbono =entrada.valorAbono,fechaAbono =entrada.fechaAbono)
     #numCuota     = Column(Integer)
     #valorAbono   = Column(Float)
-    #fechaAbono   = Column(Date)
+    #fechaAbono   = Column(Date) 
     
     db.add(abonos)
     db.commit()
