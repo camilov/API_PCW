@@ -49,7 +49,7 @@ def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)):
     
     db.add(abonos)
     db.commit()
-    db.refresh(abonos)
+    db.refresh(abonos) 
     return abonos
 
 #Ruta para modificar abonos
