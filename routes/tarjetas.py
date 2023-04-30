@@ -52,13 +52,13 @@ def create_tarjeta(entrada:schemas.ShowTarjetas,db:Session=Depends(get_db)):
                               idEstado      = entrada.idEstado     ,
                               interes       = entrada.interes      ,
                               valorDefecto  = entrada.valorDefecto ,
-                              fecActu       = entrada.fecActu      )
+                              fecActu       = entrada.fecActu      )  
    
     
     try:
         db.add(tarjeta)
         db.commit()
-        tarjetas = {"status":"sucess"}
+        tarjetas = {"status":"sucesss"}
     
     except Exception as e:
         print(f"Error al refrescar la tarjeta: {str(e)}")
