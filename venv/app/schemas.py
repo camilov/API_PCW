@@ -83,3 +83,7 @@ class ModificarAbonos(BaseModel):
     class Config:
         orm_mode = True
 
+class ResponseDeleteAbonos(BaseModel):
+
+    response : str
+
