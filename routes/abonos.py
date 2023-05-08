@@ -64,12 +64,17 @@ def modify_abonos(idAbono:int,entrada:schemas.ModificarAbonos,db:Session=Depends
 
 #Ruta para eliminar abonos
 @abonos.delete('/eliminar_abono/{idAbono}',response_model=schemas.ResponseDeleteAbonos)
-def delete_abonos(idAbonoo:int,db:Session=Depends(get_db)):
+def delete_abonos(idAbono:int,db:Session=Depends(get_db)):
+    abono = db.query(models.Abonos).filter_by(idAbono=idAbono).first()
 
-    abono = db.query(models.Abonos).filter_by(idAbono=idAbonoo).first()
-    print(idAbonoo)
-    db.delete(abono)
-    db.commit
-    respuesta = schemas.ResponseDeleteAbonos(response = "eliminado exitosamente")
+    try:
+        db.delete(abono)
+        db.commit()
+        respuesta = schemas.ResponseDeleteAbonos(response = "eliminado exitosamente")
+    
+    except Exception as e:
+        print(f"Error al eliminar el abono: {str(e)}")
+        raise e
+
 
     return respuesta
