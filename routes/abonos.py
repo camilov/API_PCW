@@ -43,6 +43,7 @@ def show_abonos(idTarjeta:int,db:Session=Depends(get_db)):
 @abonos.post('/create_abono/',response_model=schemas.showAbonos)
 def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)): 
     abonos = models.Abonos(idTarjeta =entrada.idTarjeta,numCuota =entrada.numCuota,valorAbono =entrada.valorAbono,fechaAbono =entrada.fechaAbono)
+    tarjetas = models.Tarjetas()
     #numCuota     = Column(Integer)
     #valorAbono   = Column(Float)
     #fechaAbono   = Column(Date) 
