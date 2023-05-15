@@ -2,6 +2,7 @@ from pydantic import BaseModel, ValidationError, validator
 from typing import Optional,List
 from datetime import datetime, date
 
+############################################## CLIENTES #####################################
 
 class Clientes(BaseModel):
     idCliente:Optional[int]
@@ -25,6 +26,9 @@ class ModificarClientes(BaseModel):
     
     class Config:
         orm_mode = True
+
+
+############################################## TARJETAS #####################################
 
 class ShowTarjetas(BaseModel):
 
@@ -58,6 +62,19 @@ class responseCreateTarjetas(BaseModel):
     class Config:
         orm_mode = True
 
+class modifyTarjetaAbono(BaseModel):
+
+    valorTotal    :float
+    numCuotas     :int
+    fecActu       :date
+
+    class Config:
+        orm_mode = True
+
+
+
+############################################## ABONOS #####################################
+
 class showAbonos(BaseModel): 
 
     idAbono       :Optional[int]
@@ -83,7 +100,24 @@ class ModificarAbonos(BaseModel):
     class Config:
         orm_mode = True
 
+
+
 class ResponseDeleteAbonos(BaseModel):
 
     response : str
+
+
+
+class createMovimientoAbono(BaseModel):
+    idMovimiento : Optional[int]
+    entrada      : float
+    salida       : float
+    tipMvto      : str
+    idTarjeta    : int
+    idCliente    : int
+    fecMvto      : date
+    mcaAjuste    : int
+
+    class Config:
+        orm_mode = True
 

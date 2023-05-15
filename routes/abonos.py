@@ -41,16 +41,51 @@ def show_abonos(idTarjeta:int,db:Session=Depends(get_db)):
 
 #Ruta para guardar nuevo abono de tarjeta
 @abonos.post('/create_abono/',response_model=schemas.showAbonos)
-def create_abonos(entrada:schemas.showAbonos,db:Session=Depends(get_db)): 
-    abonos = models.Abonos(idTarjeta =entrada.idTarjeta,numCuota =entrada.numCuota,valorAbono =entrada.valorAbono,fechaAbono =entrada.fechaAbono)
-    tarjetas = models.Tarjetas()
-    #numCuota     = Column(Integer)
-    #valorAbono   = Column(Float)
-    #fechaAbono   = Column(Date) 
+def create_abonos(entrada:schemas.showAbonos,movimiento:schemas.createMovimientoAbono,tarjetas:schemas.modifyTarjetaAbono,db:Session=Depends(get_db)): 
+
+    abonos = models.Abonos(idTarjeta  =entrada.idTarjeta ,
+                           numCuota   =entrada.numCuota  ,
+                           valorAbono =entrada.valorAbono,
+                           fechaAbono =entrada.fechaAbono)
     
-    db.add(abonos)
-    db.commit()
-    db.refresh(abonos) 
+    movimientos = models.Movimientos(idMovimiento = movimiento.idMovimiento,
+                                     entrada      = movimiento.entrada     ,
+                                     salida       = movimiento.salida      ,
+                                     tipMvto      = movimiento.tipMvto     ,
+                                     idTarjeta    = movimiento.idTarjeta   ,
+                                     idCliente    = movimiento.idCliente   ,
+                                     fecMvto      = movimiento.fecMvto     ,
+                                     mcaAjuste    = movimiento.mcaAjuste   )
+    
+
+    tarjeta = db.query(models.Tarjetas).filter_by(idTarjeta=entrada.idTarjeta).first()
+    tarjeta.numCuotas= tarjetas.numCuotas
+    tarjeta.valorTotal= tarjetas.valorTotal
+    tarjeta.fecActu = tarjetas.fecActu
+   
+    
+    try:
+        #INSERTAR ABONO
+        db.add(abonos)
+
+        #INSERTAR MOVIMIENTO
+        db.add(movimientos)
+
+        #ACTUALIZAR TARJETA
+        db.add(tarjeta)
+
+        #COMMIT
+        db.commit()
+        db.refresh(abonos)
+        #db.refresh(movimientos)
+        
+
+
+    except Exception as e:
+        print(f"Error al guardar: {str(e)}")
+        raise e
+
+
     return abonos
 
 #Ruta para modificar abonos

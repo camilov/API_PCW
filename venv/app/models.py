@@ -29,3 +29,14 @@ class Abonos(Base):
     numCuota     = Column(Integer)
     valorAbono   = Column(Float)
     fechaAbono   = Column(Date)
+
+class Movimientos(Base):
+    __tablename__= 'movimientos'
+    idMovimiento = Column(Integer,primary_key=True,index=True)
+    entrada      = Column(Float)
+    salida       = Column(Float)
+    tipMvto      = Column(String(3))
+    idTarjeta    = Column(Integer)
+    idCliente    = Column(Integer)
+    fecMvto      = Column(Date)
+    mcaAjuste    = Column(Integer)
