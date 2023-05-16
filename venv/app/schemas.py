@@ -121,3 +121,8 @@ class createMovimientoAbono(BaseModel):
     class Config:
         orm_mode = True
 
+
+class AbonoRequestData(BaseModel):
+    abonoData: showAbonos
+    movimientoData: createMovimientoAbono
+    tarjetaData: modifyTarjetaAbono

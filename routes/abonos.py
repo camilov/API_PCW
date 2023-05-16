@@ -41,28 +41,40 @@ def show_abonos(idTarjeta:int,db:Session=Depends(get_db)):
 
 #Ruta para guardar nuevo abono de tarjeta
 @abonos.post('/create_abono/',response_model=schemas.showAbonos)
-def create_abonos(entrada:schemas.showAbonos,movimiento:schemas.createMovimientoAbono,tarjetas:schemas.modifyTarjetaAbono,db:Session=Depends(get_db)): 
+def create_abonos(data: schemas.AbonoRequestData,db:Session=Depends(get_db)): 
 
-    abonos = models.Abonos(idTarjeta  =entrada.idTarjeta ,
-                           numCuota   =entrada.numCuota  ,
-                           valorAbono =entrada.valorAbono,
-                           fechaAbono =entrada.fechaAbono)
-    
-    movimientos = models.Movimientos(idMovimiento = movimiento.idMovimiento,
-                                     entrada      = movimiento.entrada     ,
-                                     salida       = movimiento.salida      ,
-                                     tipMvto      = movimiento.tipMvto     ,
-                                     idTarjeta    = movimiento.idTarjeta   ,
-                                     idCliente    = movimiento.idCliente   ,
-                                     fecMvto      = movimiento.fecMvto     ,
-                                     mcaAjuste    = movimiento.mcaAjuste   )
     
 
-    tarjeta = db.query(models.Tarjetas).filter_by(idTarjeta=entrada.idTarjeta).first()
-    tarjeta.numCuotas= tarjetas.numCuotas
-    tarjeta.valorTotal= tarjetas.valorTotal
-    tarjeta.fecActu = tarjetas.fecActu
+    
    
+    try:
+        abono_data = data.abonoData
+        movimiento_data = data.movimientoData
+        tarjeta_data = data.tarjetaData
+
+        abonos = models.Abonos(idTarjeta  =abono_data.idTarjeta ,
+                           numCuota   =abono_data.numCuota  ,
+                           valorAbono =abono_data.valorAbono,
+                           fechaAbono =abono_data.fechaAbono)
+    
+        movimientos = models.Movimientos(idMovimiento = movimiento_data.idMovimiento,
+                                         entrada      = movimiento_data.entrada     ,
+                                         salida       = movimiento_data.salida      ,
+                                         tipMvto      = movimiento_data.tipMvto     ,
+                                         idTarjeta    = movimiento_data.idTarjeta   ,
+                                         idCliente    = movimiento_data.idCliente   ,
+                                         fecMvto      = movimiento_data.fecMvto     ,
+                                         mcaAjuste    = movimiento_data.mcaAjuste   )
+    
+
+        tarjeta = db.query(models.Tarjetas).filter_by(idTarjeta=abono_data.idTarjeta).first()
+        tarjeta.numCuotas= tarjeta_data.numCuotas
+        tarjeta.valorTotal= tarjeta_data.valorTotal
+        tarjeta.fecActu = tarjeta_data.fecActu
+
+    except Exception as e:
+        print(f"Error al guardar: {str(e)}")
+        raise e
     
     try:
         #INSERTAR ABONO
