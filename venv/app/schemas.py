@@ -123,6 +123,16 @@ class createMovimientoAbono(BaseModel):
 
 
 class AbonoRequestData(BaseModel):
-    abonoData: showAbonos
-    movimientoData: createMovimientoAbono
-    tarjetaData: modifyTarjetaAbono
+
+    print("Entre a class abonorequestdata:")
+    try:
+        abonoData: showAbonos
+        movimientoData: createMovimientoAbono
+        tarjetaData: modifyTarjetaAbono
+    
+        
+    except Exception as e:
+        print(f"Error al guardar: {str(e)}")
+        raise e
+    
+    print("Termina class abonorequestdata:")

@@ -7,6 +7,7 @@ from typing import List
 from sqlalchemy.orm import Session
 from fastapi.params import Depends
 from middlewares.verify_token_routes import VerifyTokenRoute
+import requests
 
 
 models.Base.metadata.create_all(bind=engine)
@@ -42,8 +43,21 @@ def show_abonos(idTarjeta:int,db:Session=Depends(get_db)):
 #Ruta para guardar nuevo abono de tarjeta
 @abonos.post('/create_abono/',response_model=schemas.showAbonos)
 def create_abonos(data: schemas.AbonoRequestData,db:Session=Depends(get_db)): 
+    print("Entre a create abonos:",data)
+    #url = "http://127.0.0.1:8000/docs#/default/create_abonos_api_create_abono__post"
+    #response = requests.post(url, json=data.dict())
 
-    
+    # Check the response status code
+    #if response.status_code == 422:
+    #    # Get the response content
+    #    error_details = response.json()
+    #    print("Error Details:", error_details)
+    #    # Handle the error here (e.g., log the error, return an error response to the client, etc.)
+    #else:
+    #    # Handle the successful response here
+    #    # (e.g., process the response data, return a success response to the client, etc.)
+    #    abonos = response.json()
+    #    return abonos
 
     
    
