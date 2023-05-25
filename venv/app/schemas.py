@@ -100,6 +100,10 @@ class ModificarAbonos(BaseModel):
     class Config:
         orm_mode = True
 
+class ModificarAbonosTarjeta(BaseModel):
+    valorTotal : float
+    numCuotas  : int
+    fecActu    : date
 
 
 class ResponseDeleteAbonos(BaseModel):
@@ -136,3 +140,16 @@ class AbonoRequestData(BaseModel):
         raise e
     
     print("Termina class abonorequestdata:")
+
+
+class AbonoRequestModifyData(BaseModel):
+
+    try:
+        abonoModifyData: ModificarAbonos
+        AbonosTarjetaModifyData: ModificarAbonosTarjeta
+        movimientoData: createMovimientoAbono
+    
+        
+    except Exception as e:
+        print(f"Error al guardar: {str(e)}")
+        raise e
