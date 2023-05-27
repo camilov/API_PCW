@@ -146,8 +146,8 @@ class AbonoRequestModifyData(BaseModel):
 
     try:
         abonoModifyData: ModificarAbonos
-        AbonosTarjetaModifyData: ModificarAbonosTarjeta
-        movimientoData: createMovimientoAbono
+       # AbonosTarjetaModifyData: ModificarAbonosTarjeta
+       # movimientoData: createMovimientoAbono
     
         
     except Exception as e:
