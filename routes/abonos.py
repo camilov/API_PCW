@@ -174,11 +174,36 @@ def modify_abonos(idAbono:int,idTarjeta:int,tipMvtoNew:str,data:schemas.AbonoReq
     return abono
 
 #Ruta para eliminar abonos
-@abonos.delete('/eliminar_abono/{idAbono}',response_model=schemas.ResponseDeleteAbonos)
-def delete_abonos(idAbono:int,db:Session=Depends(get_db)):
-    abono = db.query(models.Abonos).filter_by(idAbono=idAbono).first()
+@abonos.delete('/eliminar_abono/{idAbono},{idTarjeta}',response_model=schemas.ResponseDeleteAbonos)
+def delete_abonos(idAbono:int,idTarjeta:int,data:schemas.AbonoRequestDeleteData,db:Session=Depends(get_db)):
+
+    tarjeta_data = data.tarjetaData
+    movimiento_data = data.movimientoData
+    
 
     try:
+
+        abono = db.query(models.Abonos).filter_by(idAbono=idAbono).first()
+
+        tarjeta = db.query(models.Tarjetas).filter_by(idTarjeta=idTarjeta).first()
+        tarjeta.valorTotal = tarjeta_data.valorTotal
+        tarjeta.numCuotas  = tarjeta_data.numCuotas
+        tarjeta.fecActu    = tarjeta_data.fecActu
+
+        movimientoAnulacion = models.Movimientos(idMovimiento = movimiento_data.idMovimiento,
+                                                 entrada      = movimiento_data.entrada     ,
+                                                 salida       = movimiento_data.salida      ,
+                                                 tipMvto      = movimiento_data.tipMvto     ,
+                                                 idTarjeta    = movimiento_data.idTarjeta   ,
+                                                 idCliente    = movimiento_data.idCliente   ,
+                                                 fecMvto      = movimiento_data.fecMvto     ,
+                                                 mcaAjuste    = movimiento_data.mcaAjuste   )
+
+
+        #INSERTAR MOVIMIENTO DE ANULACION
+        db.add(movimientoAnulacion)
+
+
         db.delete(abono)
         db.commit()
         respuesta = schemas.ResponseDeleteAbonos(response = "eliminado exitosamente")

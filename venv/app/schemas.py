@@ -153,3 +153,14 @@ class AbonoRequestModifyData(BaseModel):
     except Exception as e:
         print(f"Error al guardar: {str(e)}")
         raise e
+    
+class AbonoRequestDeleteData(BaseModel):
+
+    try:
+        tarjetaData: ModificarAbonosTarjeta
+        movimientoData: createMovimientoAbono
+    
+        
+    except Exception as e:
+        print(f"Error al guardar: {str(e)}")
+        raise e
