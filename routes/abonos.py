@@ -118,15 +118,54 @@ def create_abonos(data: schemas.AbonoRequestData,db:Session=Depends(get_db)):
 @abonos.put('/modificar_abono/{idAbono},{idTarjeta},{tipMvtoNew}',response_model=schemas.showAbonos)
 def modify_abonos(idAbono:int,idTarjeta:int,tipMvtoNew:str,data:schemas.AbonoRequestModifyData,db:Session=Depends(get_db)):
 
-    print("Entre a create abonos:",data)
+   # print("Entre a create abonos:",data)
 
-   
+    abono_data = data.abonoData
+    tarjeta_data = data.tarjetaData
+    movimiento_data = data.movimientoData
 
     try:
        # print("idAbono:",idAbono)
         abono = db.query(models.Abonos).filter_by(idAbono=idAbono).first()
        # print("Consulta Abonos:",abono)
 
+        abonoAnterior = abono.valorAbono
+        print("abonoAnterior:",abonoAnterior)
+        abono.numCuota   = abono_data.numCuota
+        abono.valorAbono = abono_data.valorAbono
+
+        tarjeta = db.query(models.Tarjetas).filter_by(idTarjeta=idTarjeta).first()
+        tarjeta.valorTotal = tarjeta_data.valorTotal
+        tarjeta.numCuotas  = tarjeta_data.numCuotas
+        tarjeta.fecActu    = tarjeta_data.fecActu
+
+        movimientoAnulacion = models.Movimientos(idMovimiento = movimiento_data.idMovimiento,
+                                                 entrada      = movimiento_data.entrada     ,
+                                                 salida       = abonoAnterior               ,
+                                                 tipMvto      = movimiento_data.tipMvto     ,
+                                                 idTarjeta    = movimiento_data.idTarjeta   ,
+                                                 idCliente    = movimiento_data.idCliente   ,
+                                                 fecMvto      = movimiento_data.fecMvto     ,
+                                                 mcaAjuste    = movimiento_data.mcaAjuste   )
+
+
+        #INSERTAR MOVIMIENTO DE ANULACION
+        db.add(movimientoAnulacion)
+
+        movimiento = models.Movimientos(idMovimiento = movimiento_data.idMovimiento,
+                                        entrada      = movimiento_data.salida      , 
+                                        salida       = movimiento_data.entrada     ,
+                                        tipMvto      = tipMvtoNew                  ,
+                                        idTarjeta    = movimiento_data.idTarjeta   ,
+                                        idCliente    = movimiento_data.idCliente   ,
+                                        fecMvto      = movimiento_data.fecMvto     ,
+                                        mcaAjuste    = movimiento_data.mcaAjuste   )
+        #INSERTAR MOVIMIENTO NUEVO
+        db.add(movimiento)
+
+        db.commit()
+        db.refresh(abono)
+    
     except Exception as e:
         print(f"Error al guardar: {str(e)}")
         raise e
